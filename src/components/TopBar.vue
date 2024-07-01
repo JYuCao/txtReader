@@ -2,28 +2,51 @@
 import IconPlus from '@/components/icon/IconPlus.vue';
 import IconViewList from '@/components/icon/IconViewList.vue';
 
-const emits = defineEmits(['file-loaded', 'toggle-sidebar']);
+const emits = defineEmits(['file-loaded', 'toggle-sidebar', 'directory-loaded']);
 
-function add_file() {
+function addFiles() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.txt';
+    input.webkitdirectory = true; // Enable selecting directories
     input.onchange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const contents = e.target.result;
-                // console.log('File contents:', contents);
-                emits('file-loaded', contents);
-            };
-            reader.readAsText(file);
-        }
+        const files = event.target.files;
+        const fileNames = Array.from(files).reduce((acc, file) => {
+            if (file.webkitRelativePath) {
+            const path = file.webkitRelativePath.split('/');
+            const folder = path.slice(0, -1).join('/');
+            const name = path[path.length - 1];
+            if (!acc[folder]) {
+                acc[folder] = [];
+            }
+            acc[folder].push(name);
+            } else {
+            if (!acc['']) {
+                acc[''] = [];
+            }
+            acc[''].push(file.name);
+            }
+            return acc;
+        }, {});
+        const fileNamesJson = JSON.stringify(fileNames);
+        emits('directory-loaded', fileNamesJson);
+        // console.log('File names:', fileNamesJson);
+
+        // if (files && files.length > 0) {
+        //     Array.from(files).forEach((file) => {
+        //         const reader = new FileReader();
+        //         reader.onload = (e) => {
+        //             const contents = e.target.result;
+        //             // console.log('File contents:', contents);
+        //             emits('file-loaded', contents);
+        //         };
+        //         reader.readAsText(file);
+        //     });
+        // }
     };
     input.click();
     // console.log('Add file');
 }
-
 
 function toggleSidebar() {
     emits('toggle-sidebar');
@@ -36,7 +59,7 @@ function toggleSidebar() {
         <button @click="toggleSidebar" id="show-list">
             <IconViewList class="icon" />
         </button>
-        <button @click="add_file" id="add-file">
+        <button @click="addFiles" id="add-file">
             <IconPlus class="icon" />
         </button>
     </div>

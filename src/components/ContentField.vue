@@ -22,7 +22,6 @@ const contents = computed(() => {
 #content-warpper {
     background-color: #f5f5f5;
     padding: 5rem 10rem;
-    height: 90vh;
     z-index: 1;
 }
 

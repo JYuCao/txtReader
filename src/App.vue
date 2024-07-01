@@ -7,6 +7,7 @@ import SideBar from '@/components/SideBar.vue';
 
 const fileContents = ref<string>('');
 const sidebarHeight = ref<string>('0');
+var directoryData = ref<any[]>([]);
 
 function handleFileLoaded(contents: string) {
   fileContents.value = contents;
@@ -17,15 +18,26 @@ function handleToggleSidebar() {
   sidebarHeight.value = sidebarHeight.value === '0' ? '100vh' : '0';
 }
 
+function handleDirectory(fileNamesJson: Object) {
+  directoryData = fileNamesJson;
+  console.log('File names:', directoryData);
+}
+
 </script>
 
 <template>
   <nav>
-    <TopBar @file-loaded="handleFileLoaded" @toggle-sidebar="handleToggleSidebar" />
+    <TopBar 
+      @directory-loaded="handleDirectory" 
+      @file-loaded="handleFileLoaded" 
+      @toggle-sidebar="handleToggleSidebar" 
+    />
   </nav>
   <div>
     <ContentField :contents="fileContents" />
-    <SideBar :style="{ height: sidebarHeight }" />
+    <SideBar :style="{ height: sidebarHeight }"
+            :directoryData="directoryData"
+    />
   </div>
 </template>
 
