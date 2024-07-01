@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
     contents: String
@@ -21,9 +21,9 @@ const contents = computed(() => {
 <style scoped>
 #content-warpper {
     background-color: #f5f5f5;
-    padding-left: 10rem;
-    padding-right: 10rem;
-    padding-bottom: 5rem;
+    padding: 5rem 10rem;
+    height: 90vh;
+    z-index: 1;
 }
 
 #content-warpper p {
