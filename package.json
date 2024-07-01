@@ -11,6 +11,9 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@jamescoyle/vue-icon": "^0.1.2",
+    "@mdi/js": "^7.4.47",
+    "@mdi/svg": "^7.4.47",
     "vue": "^3.4.29"
   },
   "devDependencies": {
